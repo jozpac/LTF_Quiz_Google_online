@@ -1,0 +1,156 @@
+<!-- Full-Screen Quiz Embed for WordPress -->
+<!-- Paste this code into a WordPress page using the Custom HTML block -->
+
+<style>
+/* Remove page margins and make full-screen */
+.entry-content, .site-main, .content-area {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100vw !important;
+    margin-left: calc(-50vw + 50%) !important;
+}
+
+/* Full-screen container */
+.quiz-fullscreen-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Quiz iframe styles */
+.quiz-iframe {
+    width: 100%;
+    height: 100vh;
+    border: none;
+    display: block;
+}
+
+/* Loading screen */
+.quiz-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, hsl(240, 67%, 72%) 0%, hsl(258, 37%, 62%) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    z-index: 10;
+}
+
+.quiz-loading.hidden {
+    display: none;
+}
+
+/* Spinner animation */
+@keyframes quiz-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.quiz-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255,255,255,0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: quiz-spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+/* Hide WordPress elements that might interfere */
+.site-header, .site-footer, .wp-admin-bar {
+    display: none !important;
+}
+
+body.quiz-page {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+</style>
+
+<div class="quiz-fullscreen-container">
+    <!-- Loading Screen -->
+    <div id="quiz-loading-screen" class="quiz-loading">
+        <div style="text-align: center;">
+            <div class="quiz-spinner"></div>
+            <p>Loading your quiz...</p>
+        </div>
+    </div>
+    
+    <!-- Quiz Iframe -->
+    <iframe 
+        id="quiz-embed"
+        class="quiz-iframe"
+        src="YOUR_REPLIT_URL_HERE"
+        title="YouTube Monetization Quiz"
+        allow="fullscreen"
+        allowfullscreen
+        style="display: none;">
+    </iframe>
+</div>
+
+<script>
+(function() {
+    // Add body class for styling
+    document.body.classList.add('quiz-page');
+    
+    // Handle iframe loading
+    const iframe = document.getElementById('quiz-embed');
+    const loadingScreen = document.getElementById('quiz-loading-screen');
+    
+    function hideLoading() {
+        if (loadingScreen) {
+            loadingScreen.classList.add('hidden');
+        }
+        if (iframe) {
+            iframe.style.display = 'block';
+        }
+    }
+    
+    // Show iframe when loaded
+    iframe.onload = hideLoading;
+    
+    // Fallback timeout
+    setTimeout(hideLoading, 3000);
+    
+    // Make truly full-screen by adjusting page elements
+    function makeFullScreen() {
+        const elementsToHide = [
+            '.site-header',
+            '.site-footer', 
+            '.wp-admin-bar',
+            'nav',
+            '.navigation',
+            '.breadcrumbs'
+        ];
+        
+        elementsToHide.forEach(selector => {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(el => {
+                el.style.display = 'none';
+            });
+        });
+        
+        // Remove margins/padding from common WordPress containers
+        const containers = document.querySelectorAll('.container, .content, .main, .site-main, .entry-content');
+        containers.forEach(container => {
+            container.style.margin = '0';
+            container.style.padding = '0';
+            container.style.maxWidth = 'none';
+        });
+    }
+    
+    // Apply full-screen styling
+    makeFullScreen();
+    
+    // Reapply on resize
+    window.addEventListener('resize', makeFullScreen);
+})();
+</script>
