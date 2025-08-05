@@ -106,7 +106,7 @@ export default function Quiz() {
 
   // Function to build redirect URL with preserved parameters
   const buildRedirectUrl = () => {
-    const baseUrl = "https://lp.viralprofits.yt/get-access-g";
+    const baseUrl = "https://viralprofits.co/get-access-g";
     const preservedParams = getUrlParams();
 
     if (preservedParams) {
